@@ -2,42 +2,39 @@
 
 A simple Python-based language translation tool with a Tkinter GUI.
 
-## Features
+# Features
 
 * Supports 11 languages
-* Auto language detection
+* Source and target language selection
 * Text translation
 * Copy translated text
 * Clear text option
 * Simple GUI
 
-## Requirements
+# Requirements
 
 * Python 3.x
 * Tkinter
-* deep-translator
+* requests
+* Internet connection
 
-## Install
+# Install
 
-```bash
-pip install deep-translator
-```
+pip install requests
 
-## Run
+# Run
 
-```bash
 python translator.py
-```
 
-## How to Use
+# How to Use
 
 1. Enter the text.
 2. Select the source language.
 3. Select the target language.
 4. Click **Translate**.
 5. Use **Copy Translation** to copy the result.
+6. Click **Clear** to clear the text.
 
-## Author
+# Author
 
 KOUSHIK A
-
