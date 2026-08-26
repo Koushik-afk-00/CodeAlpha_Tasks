@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from deep_translator import GoogleTranslator
+import requests
 
 
 # Language Dictionary
@@ -36,22 +36,70 @@ def translate_text():
         )
         return
 
+    if target_language == "":
+        messagebox.showwarning(
+            "Warning",
+            "Please select a target language."
+        )
+        return
+
     try:
 
+        # Source language
         if source_language == "Auto Detect":
-            source_code = "auto"
+            source_code = "en"
         else:
             source_code = languages[source_language]
 
+        # Target language
         target_code = languages[target_language]
 
-        translated = GoogleTranslator(
-            source=source_code,
-            target=target_code
-        ).translate(text)
+        # MyMemory Translation API
+        url = "https://api.mymemory.translated.net/get"
 
+        params = {
+            "q": text,
+            "langpair": f"{source_code}|{target_code}"
+        }
+
+        response = requests.get(
+            url,
+            params=params,
+            timeout=10
+        )
+
+        response.raise_for_status()
+
+        data = response.json()
+
+        # Check translation status
+        if data.get("responseStatus") != 200:
+            raise Exception(
+                data.get(
+                    "responseDetails",
+                    "Translation service failed."
+                )
+            )
+
+        translated = data["responseData"]["translatedText"]
+
+        # Display translation
         output_text.delete("1.0", tk.END)
         output_text.insert(tk.END, translated)
+
+    except requests.exceptions.ConnectionError:
+
+        messagebox.showerror(
+            "Connection Error",
+            "Please check your internet connection."
+        )
+
+    except requests.exceptions.Timeout:
+
+        messagebox.showerror(
+            "Timeout Error",
+            "The translation service took too long to respond."
+        )
 
     except Exception as error:
 
@@ -65,7 +113,10 @@ def translate_text():
 
 def copy_text():
 
-    translated = output_text.get("1.0", tk.END).strip()
+    translated = output_text.get(
+        "1.0",
+        tk.END
+    ).strip()
 
     if translated == "":
         messagebox.showwarning(
@@ -76,6 +127,7 @@ def copy_text():
 
     window.clipboard_clear()
     window.clipboard_append(translated)
+    window.update()
 
     messagebox.showinfo(
         "Copied",
@@ -87,8 +139,15 @@ def copy_text():
 
 def clear_text():
 
-    input_text.delete("1.0", tk.END)
-    output_text.delete("1.0", tk.END)
+    input_text.delete(
+        "1.0",
+        tk.END
+    )
+
+    output_text.delete(
+        "1.0",
+        tk.END
+    )
 
 
 # Main Window
@@ -108,13 +167,18 @@ title = tk.Label(
     font=("Arial", 24, "bold")
 )
 
-title.pack(pady=20)
+title.pack(
+    pady=20
+)
 
 
 # Language Selection Frame
 
 language_frame = tk.Frame(window)
-language_frame.pack(pady=10)
+
+language_frame.pack(
+    pady=10
+)
 
 
 # Source Language
@@ -130,6 +194,7 @@ source_label.grid(
     column=0,
     padx=20
 )
+
 
 source_combo = ttk.Combobox(
     language_frame,
@@ -161,6 +226,7 @@ target_label.grid(
     padx=20
 )
 
+
 target_combo = ttk.Combobox(
     language_frame,
     values=list(languages.keys()),
@@ -191,6 +257,7 @@ input_label.pack(
     pady=(20, 5)
 )
 
+
 input_text = tk.Text(
     window,
     height=7,
@@ -212,7 +279,9 @@ translate_button = tk.Button(
     pady=8
 )
 
-translate_button.pack(pady=15)
+translate_button.pack(
+    pady=15
+)
 
 
 # Output Text
@@ -229,6 +298,7 @@ output_label.pack(
     pady=(5, 5)
 )
 
+
 output_text = tk.Text(
     window,
     height=7,
@@ -239,10 +309,13 @@ output_text = tk.Text(
 output_text.pack()
 
 
-# Buttons
+# Buttons Frame
 
 button_frame = tk.Frame(window)
-button_frame.pack(pady=15)
+
+button_frame.pack(
+    pady=15
+)
 
 
 # Copy Button
