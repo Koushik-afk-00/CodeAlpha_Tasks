@@ -1,0 +1,22 @@
+[
+  {
+    "question": "What is AI?",
+    "answer": "Artificial Intelligence (AI) is a field of computer science that focuses on creating systems that can perform tasks that normally require human intelligence, such as learning, reasoning, problem-solving, and understanding language."
+  },
+  {
+    "question": "What is Artificial Intelligence?",
+    "answer": "Artificial Intelligence is the technology of building computer systems that can learn, reason, make decisions, and solve problems in ways that resemble human intelligence."
+  },
+  {
+    "question": "What is Data Science?",
+    "answer": "Data Science is a field that uses statistics, programming, mathematics, and machine learning to collect, analyze, and interpret data to find useful insights."
+  },
+  {
+    "question": "What is Python?",
+    "answer": "Python is a popular high-level programming language known for its simple syntax. It is widely used in web development, data science, artificial intelligence, automation, and machine learning."
+  },
+  {
+    "question": "What is Machine Learning?",
+    "answer": "Machine Learning is a branch of AI that allows computers to learn patterns from data and make predictions or decisions without being explicitly programmed for every task."
+  }
+]
